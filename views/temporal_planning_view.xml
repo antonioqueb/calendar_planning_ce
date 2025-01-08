@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Vista de Calendario -->
+    <record id="temporal_planning_view_calendar" model="ir.ui.view">
+        <field name="name">temporal.planning.view.calendar</field>
+        <field name="model">temporal.planning</field>
+        <field name="arch" type="xml">
+            <calendar date_start="start_date"
+                      date_stop="end_date"
+                      color="assigned_user_id"
+                      mode="month"
+                      string="Planificación Temporal"
+                      event_open_popup="true">
+                <field name="project_id" string="Proyecto"/>
+                <field name="assigned_user_id" string="Responsable"/>
+                <field name="notes" string="Notas"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Vista de Lista -->
+    <record id="temporal_planning_view_tree" model="ir.ui.view">
+        <field name="name">temporal.planning.view.tree</field>
+        <field name="model">temporal.planning</field>
+        <field name="arch" type="xml">
+            <tree string="Planificación Temporal">
+                <field name="project_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="duration_days" string="Duración (días)"/>
+                <field name="assigned_user_id"/>
+                <field name="notes"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de Formulario -->
+    <record id="temporal_planning_view_form" model="ir.ui.view">
+        <field name="name">temporal.planning.view.form</field>
+        <field name="model">temporal.planning</field>
+        <field name="arch" type="xml">
+            <form string="Planificación Temporal">
+                <sheet>
+                    <group>
+                        <field name="project_id"/>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="duration_days" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="assigned_user_id"/>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción -->
+    <record id="action_view_temporal_planning" model="ir.actions.act_window">
+        <field name="name">Planificación Temporal</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">temporal.planning</field>
+        <field name="view_mode">tree,form,calendar</field>
+    </record>
+
+    <!-- Menú -->
+    <menuitem id="menu_project_root" name="Proyectos" sequence="10"/>
+    <menuitem id="menu_temporal_planning"
+              name="Planificación Temporal"
+              parent="menu_project_root"
+              action="action_view_temporal_planning"/>
+</odoo>
