@@ -73,37 +73,3 @@ class TemporalPlanning(models.Model):
                 record.duration_days = (record.end_date - record.start_date).days + 1
             else:
                 record.duration_days = 0
-
-    # Métodos CRUD (opcional)
-    @api.model
-    def create(self, vals):
-        """Sobrecarga del método create para agregar lógica personalizada"""
-        record = super(TemporalPlanning, self).create(vals)
-        # Aquí puedes agregar lógica adicional si es necesario
-        return record
-
-    def write(self, vals):
-        """Sobrecarga del método write para agregar lógica personalizada"""
-        result = super(TemporalPlanning, self).write(vals)
-        # Aquí puedes agregar lógica adicional si es necesario
-        return result
-
-    def unlink(self):
-        """Sobrecarga del método unlink para evitar eliminación de ciertos registros"""
-        for record in self:
-            if record.project_id and record.start_date > fields.Date.today():
-                raise ValidationError("No puedes eliminar planificaciones futuras asociadas a un proyecto.")
-        return super(TemporalPlanning, self).unlink()
-
-    # Métodos auxiliares
-    def action_open_project(self):
-        """Acción para abrir el proyecto asociado"""
-        self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Proyecto',
-            'res_model': 'project.project',
-            'view_mode': 'form',
-            'res_id': self.project_id.id,
-            'target': 'current',
-        }
